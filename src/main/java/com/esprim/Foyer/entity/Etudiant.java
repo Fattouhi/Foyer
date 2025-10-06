@@ -21,4 +21,7 @@ public class Etudiant {
 
     @Temporal(TemporalType.DATE)
     private Date dateNaissance;
+
+    @ManyToMany(mappedBy = "etudiants")
+    private Set<Reservation> reservations;
 }

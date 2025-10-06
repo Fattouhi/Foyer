@@ -14,4 +14,8 @@ public class Universite {
 
     private String nomUniversite;
     private String adresse;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "foyer_id", referencedColumnName = "idFoyer")
+    private Foyer foyer;
 }

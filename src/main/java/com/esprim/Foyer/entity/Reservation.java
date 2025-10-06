@@ -17,4 +17,16 @@ public class Reservation {
     private Date anneeUniversitaire;
 
     private Boolean estValide;
+
+    @ManyToOne
+    @JoinColumn(name = "chambre_id", referencedColumnName = "idChambre")
+    private Chambre chambre;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "reservation_etudiant",
+            joinColumns = @JoinColumn(name = "reservation_id"),
+            inverseJoinColumns = @JoinColumn(name = "etudiant_id")
+    )
+    private Set<Etudiant> etudiants;
 }

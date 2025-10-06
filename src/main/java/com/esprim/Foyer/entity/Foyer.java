@@ -15,4 +15,10 @@ public class Foyer {
 
     private String nomFoyer;
     private Long capaciteFoyer;
+
+    @OneToOne(mappedBy = "foyer")
+    private Universite universite;
+
+    @OneToMany(mappedBy = "foyer", cascade = CascadeType.ALL)
+    private Set<Bloc> blocs;
 }

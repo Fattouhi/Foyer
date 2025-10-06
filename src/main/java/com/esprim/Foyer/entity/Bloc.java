@@ -16,5 +16,10 @@ public class Bloc {
     private String nomBloc;
     private Long capaciteBloc;
 
+    @ManyToOne
+    @JoinColumn(name = "foyer_id", referencedColumnName = "idFoyer")
+    private Foyer foyer;
 
+    @OneToMany(mappedBy = "bloc", cascade = CascadeType.ALL)
+    private Set<Chambre> chambres;
 }

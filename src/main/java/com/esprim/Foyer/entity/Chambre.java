@@ -18,4 +18,10 @@ public class Chambre {
     @Enumerated(EnumType.STRING)
     private TypeChambre typeChambre;
 
+    @ManyToOne
+    @JoinColumn(name = "bloc_id", referencedColumnName = "idBloc")
+    private Bloc bloc;
+
+    @OneToMany(mappedBy = "chambre", cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
 }
