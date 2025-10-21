@@ -1,4 +1,4 @@
-package com.esprim.Foyer.entity;
+package com.esprim.Foyer.entities;
 
 public enum TypeChambre {
     SIMPLE,
