@@ -2,12 +2,20 @@ package com.esprim.Foyer.controllers;
 
 import com.esprim.Foyer.entities.Chambre;
 import com.esprim.Foyer.services.IChambreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 public class ChambreRestController {
-    IChambreService iChambreService;
+
+    private final IChambreService iChambreService;
+
+    @Autowired
+    public ChambreRestController(IChambreService iChambreService) {
+        this.iChambreService = iChambreService;
+    }
 
     @GetMapping("/retrieve-all-chambres")
     public List<Chambre> retrieveAllChambres() {
@@ -24,8 +32,8 @@ public class ChambreRestController {
         return iChambreService.saveChambre(chambre);
     }
 
-    @DeleteMapping("/remove-chambre/{chmabre-id}")
-    public void removeChambre(@PathVariable("chmabre-id") Long chambreId) {
+    @DeleteMapping("/remove-chambre/{chambre-id}")
+    public void removeChambre(@PathVariable("chambre-id") Long chambreId) {
         iChambreService.deleteChambreById(chambreId);
     }
 

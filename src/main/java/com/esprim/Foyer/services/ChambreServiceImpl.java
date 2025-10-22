@@ -8,32 +8,32 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ChambreServiceImpl implements IChambreService{
+public class ChambreServiceImpl implements IChambreService {
     @Autowired
     private ChambreRepository chambreRepository;
 
     @Override
     public List<Chambre> getAllChambre() {
-        return  chambreRepository.findAll();
+        return chambreRepository.findAll();
     }
 
     @Override
     public Chambre getChambreById(Long id) {
-        return chambreRepository.findById(id).get();
+        return chambreRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void saveChambre(Chambre chambre) {
-
+    public Chambre saveChambre(Chambre chambre) {
+        return chambreRepository.save(chambre);
     }
 
     @Override
     public void deleteChambreById(Long id) {
-
+        chambreRepository.deleteById(id);
     }
 
     @Override
     public void updateChambre(Chambre chambre) {
-
+        chambreRepository.save(chambre);
     }
 }
