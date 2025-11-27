@@ -1,14 +1,17 @@
 package com.esprim.Foyer.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.Date;
 import java.util.Set;
 
-@Setter
-@Getter
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = "reservations")
 public class Etudiant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,6 @@ public class Etudiant {
     @Temporal(TemporalType.DATE)
     private Date dateNaissance;
 
-    @ManyToMany(mappedBy = "etudiants")
+    @ManyToMany(mappedBy = "etudiants", cascade = CascadeType.ALL)
     private Set<Reservation> reservations;
 }

@@ -1,13 +1,16 @@
 package com.esprim.Foyer.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.Set;
 
-@Setter
-@Getter
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = "chambres")
 public class Bloc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +20,9 @@ public class Bloc {
     private Long capaciteBloc;
 
     @ManyToOne
-    @JoinColumn(name = "foyer_id", referencedColumnName = "idFoyer")
+    @JoinColumn(name = "idFoyer")
     private Foyer foyer;
 
-    @OneToMany(mappedBy = "bloc", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bloc")
     private Set<Chambre> chambres;
 }

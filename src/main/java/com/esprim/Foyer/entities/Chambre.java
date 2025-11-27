@@ -1,13 +1,14 @@
 package com.esprim.Foyer.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import java.util.Set;
+import lombok.*;
 
-@Setter
-@Getter
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Chambre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,12 +17,12 @@ public class Chambre {
     private Long numeroChambre;
 
     @Enumerated(EnumType.STRING)
-    private TypeChambre typeChambre;
+    private TypeChambre typeC;
 
     @ManyToOne
-    @JoinColumn(name = "bloc_id", referencedColumnName = "idBloc")
+    @JoinColumn(name = "idBloc")
     private Bloc bloc;
 
-    @OneToMany(mappedBy = "chambre", cascade = CascadeType.ALL)
-    private Set<Reservation> reservations;
+    @OneToOne
+    private Reservation reservation;
 }

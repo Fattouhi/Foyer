@@ -1,39 +1,55 @@
 package com.esprim.Foyer.services;
 
 import com.esprim.Foyer.entities.Chambre;
-import com.esprim.Foyer.repositories.ChambreRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.esprim.Foyer.entities.TypeChambre;
+import com.esprim.Foyer.repositories.IChambreRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ChambreServiceImpl implements IChambreService {
-    @Autowired
-    private ChambreRepository chambreRepository;
+
+    private IChambreRepository chambreRepository;
 
     @Override
-    public List<Chambre> getAllChambre() {
+    public List<Chambre> retrieveAllChambres() {
         return chambreRepository.findAll();
     }
 
     @Override
-    public Chambre getChambreById(Long id) {
-        return chambreRepository.findById(id).orElse(null);
+    public Chambre addChambre(Chambre c) {
+        return chambreRepository.save(c);
     }
 
     @Override
-    public Chambre saveChambre(Chambre chambre) {
-        return chambreRepository.save(chambre);
+    public Chambre updateChambre(Chambre c) {
+        return chambreRepository.save(c);
     }
 
     @Override
-    public void deleteChambreById(Long id) {
-        chambreRepository.deleteById(id);
+    public Chambre retrieveChambre(long idChambre) {
+        return chambreRepository.findById(idChambre).orElse(null);
     }
 
     @Override
-    public void updateChambre(Chambre chambre) {
-        chambreRepository.save(chambre);
+    public List<Chambre> getChambresParNomUniversite(String nomUniversite) {
+        return chambreRepository.findChambresParNomUniversite(nomUniversite);
+    }
+
+    @Override
+    public List<Chambre> getChambresParBlocEtType(long idBloc, TypeChambre typeC) {
+        // Using JPQL method
+        return chambreRepository.findChambresParBlocEtTypeJPQL(idBloc, typeC);
+
+        // Alternative: Using Keywords method
+        // return chambreRepository.findByBlocIdBlocAndTypeC(idBloc, typeC);
+    }
+
+    @Override
+    public List<Chambre> getChambresNonReserveParNomUniversiteEtTypeChambre(String nomUniversite, TypeChambre type) {
+        return chambreRepository.findChambresNonReserveesParNomUnivEtType(nomUniversite, type);
     }
 }

@@ -1,14 +1,18 @@
 package com.esprim.Foyer.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.Date;
 import java.util.Set;
 
-@Setter
-@Getter
 @Entity
+@IdClass(ReservationId.class)
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Reservation {
     @Id
     private String idReservation;
@@ -16,17 +20,20 @@ public class Reservation {
     @Temporal(TemporalType.DATE)
     private Date anneeUniversitaire;
 
-    private Boolean estValide;
+    private boolean estValide;
 
-    @ManyToOne
-    @JoinColumn(name = "chambre_id", referencedColumnName = "idChambre")
-    private Chambre chambre;
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "reservation_etudiant",
-            joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "etudiant_id")
+            joinColumns = {
+                    @JoinColumn(name = "idReservation", referencedColumnName = "idReservation")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "idEtudiant", referencedColumnName = "idEtudiant")
+            }
     )
     private Set<Etudiant> etudiants;
+
+    @OneToOne(mappedBy = "reservation")
+    private Chambre chambre;
 }
