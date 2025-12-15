@@ -5,12 +5,17 @@ import com.esprim.Foyer.entities.Chambre;
 import com.esprim.Foyer.repositories.IBlocRepository;
 import com.esprim.Foyer.repositories.IChambreRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class BlocServiceImpl implements IBlocService {
 
     private IBlocRepository blocRepository;
@@ -56,4 +61,35 @@ public class BlocServiceImpl implements IBlocService {
         }
         return null;
     }
+    @Scheduled(cron = "0 */1 * * * *") // Every 1 minute
+    public void afficherChambresParBlocEtType() {
+
+        List<Chambre> chambres = chambreRepository.findAll();
+
+        if (chambres.isEmpty()) {
+            log.info("Aucune chambre en base.");
+            return;
+        }
+
+        Map<String, Map<String, Integer>> map = new HashMap<>();
+
+        for (Chambre chambre : chambres) {
+
+            String blocName = (chambre.getBloc() != null) ? chambre.getBloc().getNomBloc() : "NON AFFECTÉ";
+            String type = (chambre.getTypeC() != null) ? chambre.getTypeC().toString() : "TYPE NON DEFINI";
+
+            map.putIfAbsent(blocName, new HashMap<>());
+            Map<String, Integer> typeCount = map.get(blocName);
+
+            typeCount.put(type, typeCount.getOrDefault(type, 0) + 1);
+        }
+
+        log.info(" Statistiques des chambres par Bloc:");
+
+        map.forEach((bloc, types) -> {
+            log.info("Bloc: " + bloc);
+            types.forEach((type, count) -> log.info(" → " + type + ": " + count));
+        });
+    }
+
 }
